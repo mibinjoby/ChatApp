@@ -2,6 +2,7 @@ import User from "../models/user.model.js"
 import bcrypt from "bcryptjs"
 import express from "express"
 import { genrateToken } from "../lib/utils.js"
+import cloudinary from "../lib/cloudinary.js"
 
 const router = express.Router()
 
@@ -42,7 +43,7 @@ export const signup = async (req,res ) => {
             res.status(201).json({
 
                 _id:newUser._id,
-                fullName:newUser.fullname,
+                fullName:newUser.fullName,
                 id:newUser.email,
                 profilepic: newUser.profilepic,
             })
@@ -57,7 +58,7 @@ export const signup = async (req,res ) => {
         
         
     }
-    res.send("signup route")
+   // res.send("signup route")
 }
 
 export const login = async  (req,res ) => {
@@ -90,7 +91,7 @@ export const login = async  (req,res ) => {
         
         
     }
-    res.send("login  route")
+   // res.send("login  route")
 }
 
 export const logout = (req,res ) => {
@@ -105,10 +106,39 @@ export const logout = (req,res ) => {
         
     }
     
-    res.send("logout route")
+   
 }
 
-export const updateprofile =async (req,res) =>{
+export const updateprofile = async (req,res) => {
     
+    try {
+        const {profilepic} = req.body;
+        const user_id= req.user_id
+
+        if(!profilepic) {
+            return res.status(400).json({ message:"profile pic is required"})
+        }
+
+
+      
+        const uploadResponse = await cloudinary.uploader.upload(profilepic)
+        const updatedUser =  await User.findByIdAndupdate(user_id,{profilepic:uploadResponse,secure_url},{new:true})
+
+        res.status(200).jsonupdatedUser
+
+
+    } catch (error) {
+        console.log("error in uploading profilepic",error)
+        res.status(500).json({message:"internal server error"})
+    }
 }
-export default router;
+
+export const checkAuth = (req,res) =>{
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
+export default router

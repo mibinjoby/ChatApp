@@ -1,22 +1,22 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongooose.Schema(
+const userSchema = new mongoose.Schema(
 
     {
         email:{
             type:String,
-            requried: true,
+            required: true,
             unique:true,
         },
         fullName:{
             type:String,
-            requried: true,
+            required: true,
     
 
         },
         password:{
-            type: true,
-            required:true,
+            type: String,
+            required: true,
             minlength:6,
         },
         profilepic:{
@@ -24,6 +24,7 @@ const userSchema = new mongooose.Schema(
             default:"",
         },
     },
+    
     {timestamps: true }
 
 );

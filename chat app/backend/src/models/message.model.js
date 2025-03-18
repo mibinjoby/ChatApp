@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const messageSchema = new mongoose.Schema(
+const MessageSchema = new mongoose.Schema(
     {
         senderId:{
             type: mongoose.Schema.Types.ObjectId,
@@ -24,4 +24,4 @@ const messageSchema = new mongoose.Schema(
     {timestamps: true }
 )
 
-
+export  default Message

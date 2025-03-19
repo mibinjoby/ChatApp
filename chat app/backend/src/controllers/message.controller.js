@@ -1,13 +1,16 @@
-import User from "../models/user.model.js"
+import User from "../models/user.model.js"; 
 import Message from"../models/message.model.js"
+import cloudinary from"../lib/cloudinary.js"
 
 
-export const getUsersForSidebar = async (res,req) => {
+export const getUsersForSidebar = async (req,res) => {
 try {
     const loggedUserId = req.user._id
-    constfilteredUsers = await user.find({_id:{$ne:loggedUserId}}).select {"-password"}
 
-     res.status(200).json(filteredusers)
+    const filteredUsers = await User.find({_id:{$ne:loggedUserId}}).select ("-password");
+
+     res.status(200).json(filteredUsers)
+
 } catch (error) {
     console.log("error in getUsersForSidebar: ", error.message);
     res.status(500).json({message:"internal server error"})
@@ -15,25 +18,26 @@ try {
 }
 }
 
-export const getmessage =async (res,req) => {
+export const getMessage =async (req,res) => {
     try {
-        const{ id:userTochatId} = req.params
+        const{ id: userTochatId} = req.params
         const senderId = req.user._id
 
         const message =await Message.find({
             $or:[
-                {senderId:senderId,reciverId:userTochatId},
-                {senderId:userTochatId,reciverId:myId}
+                {senderId:senderId,receiverId:userTochatId},
+                {senderId:userTochatId,receiverId:myId}
             ]
         })
         res.status(200).json(message)
+
     } catch (error) {
         console.log("error in getMessages controller: ", error.message);
     res.status(500).json({message:"internal server error"}) 
     }
 }
 
-export const sendMessage = async (res,req) =>{
+export const sendMessage = async (req,res) =>{
     try {
         const {text ,image} =req.body
         const{id: reciverId} = req.params
@@ -56,8 +60,10 @@ export const sendMessage = async (res,req) =>{
         await newMessage.save()
 
          res.status(201).json(newMessage)
+
     } catch (error) {
         console.log("error in sendMessages controller: ", error.message);
     res.status(500).json({message:"internal server error"}) 
     }
 }
+

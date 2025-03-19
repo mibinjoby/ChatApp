@@ -12,9 +12,7 @@ const app = express ();
 const PORT = process.env.PORT
 
 app.use(express,json())
-
 app.use(cookieparser())
-
 app.use("/app/auth",authRoutes)
 app.use("/app/message",messageRoutes)
 

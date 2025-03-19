@@ -1,13 +1,9 @@
 import React from 'react'
 
-export default function Navbar() {
+export default function settings() {
   return (
     <div>
-        
-      Navbar
-
+      setting
     </div>
   )
 }
-
-
